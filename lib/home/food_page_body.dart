@@ -24,7 +24,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
     super.initState();
     pageController.addListener(() {
       setState(() {
-        _currentPageValue = pageController.page ?? 0; // Handle null case
+        _currentPageValue = pageController.page ?? 0;
       });
     });
   }
@@ -51,9 +51,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
         ),
         DotsIndicator(
           dotsCount: 5,
-          position: _currentPageValue
-              .clamp(0, 4)
-              .toDouble(), // Prevent out-of-bounds errors
+          position: _currentPageValue.clamp(0, 4).toDouble(),
           decorator: DotsDecorator(
             activeColor: AppColors.mainColor,
             size: const Size.square(9.0),
@@ -75,55 +73,80 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                 child: BigText(text: ".", color: Colors.black26),
               ),
               SizedBox(width: Dimensions.width10),
-              Container(
-                child: SmallText(text: "Food pairing"),
-              )
+              SmallText(text: "Food pairing"),
             ],
           ),
         ),
-        Container(
-          height: 900,
-          child: ListView.builder(
-              physics: NeverScrollableScrollPhysics(),
-              // shrinkWrap: true,
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                return Container(
-                    margin: EdgeInsets.only(
-                        left: Dimensions.width20,
-                        right: Dimensions.width20,
-                        bottom: Dimensions.height10),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 120,
-                          height: 120,
+        ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: 10,
+            itemBuilder: (context, index) {
+              return Container(
+                  margin: EdgeInsets.only(
+                      left: Dimensions.width20,
+                      right: Dimensions.width20,
+                      bottom: Dimensions.height10),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: Dimensions.listViewImgSize,
+                        height: Dimensions.listViewImgSize,
+                        decoration: BoxDecoration(
+                            borderRadius:
+                                BorderRadius.circular(Dimensions.reduis30),
+                            color: Colors.white38,
+                            image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: AssetImage(
+                                    "assets/images/brooke-lark-oaz0raysASk-unsplash.jpg"))),
+                      ),
+                      Expanded(
+                        child: Container(
+                          height: Dimensions.listViewTextSize,
                           decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.circular(Dimensions.reduis30),
-                              color: Colors.white38,
-                              image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: AssetImage(
-                                      "assets/images/brooke-lark-oaz0raysASk-unsplash.jpg"))),
-                        ),
-                        Expanded(
-                          child: Container(
-                            height: 100,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                  topRight:
-                                      Radius.circular(Dimensions.reduis20),
-                                  bottomRight:
-                                      Radius.circular(Dimensions.reduis20)),
-                              color: Colors.white,
-                            ),
+                            borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(Dimensions.reduis20),
+                                bottomRight:
+                                    Radius.circular(Dimensions.reduis20)),
+                            color: Colors.white,
                           ),
-                        )
-                      ],
-                    ));
-              }),
-        )
+                          child: Padding(
+                            padding: EdgeInsets.only(left: Dimensions.width10),
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  BigText(
+                                      text: 'Nutritions fruits meal in China'),
+                                  SizedBox(height: Dimensions.height10),
+                                  SmallText(text: "With chines characterics"),
+                                  SizedBox(height: Dimensions.height10),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      IconAndText(
+                                          icon: Icons.circle_sharp,
+                                          text: "Normal",
+                                          iconColor: AppColors.iconColor1),
+                                      IconAndText(
+                                          icon: Icons.location_on,
+                                          text: "1.7 km",
+                                          iconColor: AppColors.mainColor),
+                                      IconAndText(
+                                          icon: Icons.access_time_rounded,
+                                          text: "32 min",
+                                          iconColor: AppColors.iconColor2),
+                                    ],
+                                  )
+                                ]),
+                          ),
+                        ),
+                      )
+                    ],
+                  ));
+            }),
       ],
     );
   }
@@ -141,109 +164,24 @@ class _FoodPageBodyState extends State<FoodPageBody> {
       var currTrans = _height * (1 - currScale) / 2;
       matrix = Matrix4.diagonal3Values(1, currScale, 1)
         ..setTranslationRaw(0, currTrans, 0);
-    } else if (index == _currentPageValue.floor() - 1) {
-      var currScale = 1 - (_currentPageValue - index) * (1 - _scaleFactor);
-      var currTrans = _height * (1 - currScale) / 2;
-      matrix = Matrix4.diagonal3Values(1, currScale, 1)
-        ..setTranslationRaw(0, currTrans, 0);
     } else {
       var currScale = _scaleFactor;
       matrix = Matrix4.diagonal3Values(1, currScale, 1)
         ..setTranslationRaw(0, _height * (1 - _scaleFactor) / 2, 1);
     }
-
     return Transform(
       transform: matrix,
-      child: Stack(
-        children: [
-          Container(
-            height: Dimensions.pageViewContainer,
-            margin: const EdgeInsets.symmetric(horizontal: 10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(Dimensions.reduis30),
-              color: index.isEven
-                  ? const Color(0xFF69C5DF)
-                  : const Color(0xFF9294CC),
-              image: const DecorationImage(
-                fit: BoxFit.cover,
-                image: AssetImage(
-                    "assets/images/brooke-lark--F_5g8EEHYE-unsplash.jpg"),
-              ),
-            ),
+      child: Container(
+        height: Dimensions.pageViewContainer,
+        margin: const EdgeInsets.symmetric(horizontal: 10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(Dimensions.reduis30),
+          image: const DecorationImage(
+            fit: BoxFit.cover,
+            image: AssetImage(
+                "assets/images/brooke-lark--F_5g8EEHYE-unsplash.jpg"),
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              height: 100,
-              margin: EdgeInsets.only(
-                  left: Dimensions.width30,
-                  right: Dimensions.width30,
-                  bottom: Dimensions.height10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(Dimensions.reduis20),
-                color: Colors.white,
-                boxShadow: const [
-                  BoxShadow(
-                      color: Color(0xFFe8e8e8),
-                      blurRadius: 5.0,
-                      offset: Offset(0, 5)),
-                  BoxShadow(color: Colors.white, offset: Offset(-5, 0)),
-                  BoxShadow(color: Colors.white, offset: Offset(5, 0)),
-                ],
-              ),
-              child: Padding(
-                padding: EdgeInsets.only(
-                    top: Dimensions.height15,
-                    left: Dimensions.height15,
-                    right: Dimensions.height15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    BigText(text: "Chinese Side"),
-                    SizedBox(height: Dimensions.height10),
-                    Row(
-                      children: [
-                        Wrap(
-                          children: List.generate(
-                              5,
-                              (index) => Icon(
-                                    Icons.star,
-                                    color: AppColors.mainColor,
-                                    size: 15,
-                                  )),
-                        ),
-                        SizedBox(width: Dimensions.width10),
-                        SmallText(text: '4.5'),
-                        SizedBox(width: Dimensions.width10),
-                        SmallText(text: "1237"),
-                        SizedBox(width: Dimensions.width10),
-                        SmallText(text: "Comments")
-                      ],
-                    ),
-                    SizedBox(height: Dimensions.height20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconAndText(
-                            icon: Icons.circle_sharp,
-                            text: "Normal",
-                            iconColor: AppColors.iconColor1),
-                        IconAndText(
-                            icon: Icons.location_on,
-                            text: "1.7 km",
-                            iconColor: AppColors.mainColor),
-                        IconAndText(
-                            icon: Icons.access_time_rounded,
-                            text: "32 min",
-                            iconColor: AppColors.iconColor2),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

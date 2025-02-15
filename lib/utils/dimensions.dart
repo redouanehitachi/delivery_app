@@ -20,4 +20,7 @@ class Dimensions {
   static double font20 = screenHeight / 42.2;
   static double reduis20 = screenHeight / 42.2;
   static double reduis30 = screenHeight / 28.3;
+  // llist view size
+  static double listViewImgSize = screenWidth / 3.25;
+  static double listViewTextSize = screenWidth / 3.9;
 }
